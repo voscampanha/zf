@@ -89,7 +89,28 @@ class PessoaController extends AbstractActionController{
 
     public function deleteAction()
     {
-        return new ViewModel();
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('pessoa');
+        }
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del == 'Yes') {
+                $id = (int) $request->getPost('id');
+                $this->table->deletePessoa($id);
+            }
+
+            // Redirect to list of pessoas
+            return $this->redirect()->toRoute('pessoa');
+        }
+
+        return [
+            'id'    => $id,
+            'pessoa' => $this->table->getPessoa($id),
+        ];
     }
 
 }
