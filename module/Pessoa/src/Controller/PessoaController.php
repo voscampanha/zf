@@ -44,12 +44,47 @@ class PessoaController extends AbstractActionController{
         $pessoa->exchangeArray($form->getData());
         $this->table->savePessoa($pessoa);
         return $this->redirect()->toRoute('pessoa');
-        return new ViewModel();
     }
 
     public function editAction()
     {
-        return new ViewModel();
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if (0 === $id) {
+            return $this->redirect()->toRoute('pessoa', ['action' => 'add']);
+        }
+
+        // Retrieve the pessoa with the specified id. Doing so raises
+        // an exception if the pessoa is not found, which should result
+        // in redirecting to the landing page.
+        try {
+            $pessoa = $this->table->getPessoa($id);
+        } catch (\Exception $e) {
+            return $this->redirect()->toRoute('pessoa', ['action' => 'index']);
+        }
+
+        $form = new PessoaForm();
+        $form->bind($pessoa);
+        $form->get('submit')->setAttribute('value', 'Edit');
+
+        $request = $this->getRequest();
+        $viewData = ['id' => $id, 'form' => $form];
+
+        if (! $request->isPost()) {
+            return $viewData;
+        }
+
+        $form->setInputFilter($pessoa->getInputFilter());
+        $form->setData($request->getPost());
+
+        if (! $form->isValid()) {
+            return $viewData;
+        }
+
+        $this->table->savePessoa($pessoa);
+
+        // Redirect to pessoa list
+        return $this->redirect()->toRoute('pessoa', ['action' => 'index']);    
     }
 
     public function deleteAction()

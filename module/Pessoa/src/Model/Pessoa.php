@@ -29,6 +29,17 @@ class Pessoa implements InputFilterAwareInterface {
         $this->status     = !empty($data['status']) ? $data['status'] : null;
     }
 
+    public function getArrayCopy()
+    {
+        return [
+            'id'     => $this->id,
+            'name' => $this->name,
+            'lastname'  => $this->lastname,
+            'email' => $this->email,
+            'status' => $this->status,
+        ];
+    }
+
     public function getId(){
         return $this->id;
     }
