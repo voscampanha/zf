@@ -40,5 +40,7 @@ return [
         'username' => 'root',
         'password' => 'senha123',
         'hostname' => 'localhost',
+        'port' => '49359',
+
     ],
 ];
