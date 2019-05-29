@@ -36,10 +36,10 @@ return [
     ],
     'db' => [
         'driver' => 'Pdo_Mysql',
-        'database' => 'test',
-        'username' => 'root',
-        'password' => 'senha123',
-        'hostname' => 'localhost',
+        'database' => 'localdb',
+        'username' => 'azure',
+        'password' => '6#vWHD_$',
+        'hostname' => '127.0.0.1',
         'port' => '49359',
 
     ],
